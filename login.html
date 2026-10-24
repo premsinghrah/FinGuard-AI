@@ -359,7 +359,7 @@
     </div>
 
     <div class="back-home">
-      <a href="/"><i class="fa-solid fa-arrow-left"></i> Return to Product Landing Page</a>
+      <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Return to Product Landing Page</a>
     </div>
   </div>
 
@@ -415,7 +415,7 @@
           localStorage.setItem('finguard_session', JSON.stringify(data.user));
           btn.innerHTML = '<i class="fa-solid fa-check"></i> Authorized! Entering...';
           setTimeout(() => {
-            window.location.href = '/dashboard';
+            window.location.href = 'demo_dashboard.html';
           }, 400);
         } else {
           errBox.textContent = data.message || 'Authentication failed: Invalid ERPNext credentials or insufficient role permissions.';
@@ -424,10 +424,18 @@
           btn.disabled = false;
         }
       } catch (err) {
-        errBox.textContent = 'Network error connecting to ERPNext authentication handler.';
-        errBox.style.display = 'block';
-        btn.innerHTML = '<i class="fa-solid fa-fingerprint"></i> Authenticate & Enter Console';
-        btn.disabled = false;
+        // Fallback for static demo environments (e.g. GitHub Pages)
+        const demoUser = {
+          username: usr,
+          full_name: usr === 'administrator' ? 'Administrator' : 'CA Rajesh Sharma',
+          role: usr === 'cfo.priya@apex.erp' ? 'Financial Controller' : 'System Manager',
+          email: usr.includes('@') ? usr : `${usr}@apex.erp`
+        };
+        localStorage.setItem('finguard_session', JSON.stringify(demoUser));
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Demo Authorized! Entering...';
+        setTimeout(() => {
+          window.location.href = 'demo_dashboard.html';
+        }, 400);
       }
     }
 

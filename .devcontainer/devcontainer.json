@@ -1,0 +1,14 @@
+{
+  "name": "FinGuard AI",
+  "image": "mcr.microsoft.com/devcontainers/python:3.10",
+  "features": {},
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "FinGuard AI Console",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postCreateCommand": "pip install -r requirements.txt",
+  "postStartCommand": "python3 run_demo.py 8080"
+}

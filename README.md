@@ -9,11 +9,18 @@
 </p>
 
 <p align="center">
+  <a href="https://codespaces.new/premsinghrah/FinGuard-AI">
+    <img src="https://github.com/codespaces/badge.svg" alt="Open in GitHub Codespaces">
+  </a>
+</p>
+
+<p align="center">
   <strong>Detect anomalies. Explain risks. Protect financial integrity.</strong>
 </p>
 
 <p align="center">
-  An AI-powered financial anomaly detection and investigation system built as a custom ERPNext/Frappe application.
+  An AI-powered financial anomaly detection and investigation system built as a custom ERPNext/Frappe application.<br>
+  🌐 <strong>Live GitHub Pages Demo</strong>: <a href="https://premsinghrah.github.io/FinGuard-AI/">https://premsinghrah.github.io/FinGuard-AI/</a>
 </p>
 
 ---
