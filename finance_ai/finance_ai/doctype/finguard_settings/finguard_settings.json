@@ -1,0 +1,203 @@
+{
+ "actions": [],
+ "creation": "2024-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "document_type": "Document",
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "scan_mode",
+  "section_break_weights",
+  "ml_weight",
+  "rule_weight",
+  "duplicate_weight",
+  "section_break_thresholds",
+  "anomaly_threshold",
+  "high_risk_threshold",
+  "column_break_thresholds2",
+  "medium_risk_threshold",
+  "large_amount_threshold",
+  "lookback_days",
+  "section_break_dup",
+  "duplicate_similarity_threshold",
+  "duplicate_date_window",
+  "section_break_notify",
+  "notify_on_high_risk",
+  "email_digest",
+  "notify_roles",
+  "section_break_model",
+  "model_path",
+  "auto_retrain",
+  "retrain_frequency"
+ ],
+ "fields": [
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Enable FinGuard AI"
+  },
+  {
+   "fieldname": "scan_mode",
+   "fieldtype": "Select",
+   "label": "Scan Mode",
+   "options": "Hybrid\nML Only\nRules Only",
+   "default": "Hybrid"
+  },
+  {
+   "fieldname": "section_break_weights",
+   "fieldtype": "Section Break",
+   "label": "Scoring Weights (must sum to 100)"
+  },
+  {
+   "default": "40",
+   "fieldname": "ml_weight",
+   "fieldtype": "Int",
+   "label": "ML Weight (%)"
+  },
+  {
+   "default": "35",
+   "fieldname": "rule_weight",
+   "fieldtype": "Int",
+   "label": "Rule Weight (%)"
+  },
+  {
+   "default": "25",
+   "fieldname": "duplicate_weight",
+   "fieldtype": "Int",
+   "label": "Duplicate Weight (%)"
+  },
+  {
+   "fieldname": "section_break_thresholds",
+   "fieldtype": "Section Break",
+   "label": "Detection Thresholds"
+  },
+  {
+   "default": "0.05",
+   "description": "Isolation Forest contamination parameter (expected anomaly fraction).",
+   "fieldname": "anomaly_threshold",
+   "fieldtype": "Float",
+   "label": "IForest Contamination",
+   "precision": "3"
+  },
+  {
+   "default": "0.80",
+   "fieldname": "high_risk_threshold",
+   "fieldtype": "Float",
+   "label": "High Risk Threshold",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_thresholds2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0.50",
+   "fieldname": "medium_risk_threshold",
+   "fieldtype": "Float",
+   "label": "Medium Risk Threshold",
+   "precision": "2"
+  },
+  {
+   "default": "500000",
+   "fieldname": "large_amount_threshold",
+   "fieldtype": "Currency",
+   "label": "Large Amount Threshold"
+  },
+  {
+   "default": "90",
+   "fieldname": "lookback_days",
+   "fieldtype": "Int",
+   "label": "Lookback Days (Full Scan)"
+  },
+  {
+   "fieldname": "section_break_dup",
+   "fieldtype": "Section Break",
+   "label": "Duplicate Detection"
+  },
+  {
+   "default": "85",
+   "fieldname": "duplicate_similarity_threshold",
+   "fieldtype": "Int",
+   "label": "Narration Similarity Threshold (%)"
+  },
+  {
+   "default": "3",
+   "fieldname": "duplicate_date_window",
+   "fieldtype": "Int",
+   "label": "Date Window (days)"
+  },
+  {
+   "fieldname": "section_break_notify",
+   "fieldtype": "Section Break",
+   "label": "Notifications"
+  },
+  {
+   "default": "1",
+   "fieldname": "notify_on_high_risk",
+   "fieldtype": "Check",
+   "label": "Notify on High Risk Alert"
+  },
+  {
+   "default": "0",
+   "fieldname": "email_digest",
+   "fieldtype": "Check",
+   "label": "Send Daily Email Digest"
+  },
+  {
+   "fieldname": "notify_roles",
+   "fieldtype": "Table MultiSelect",
+   "label": "Notify Roles",
+   "options": "Has Role"
+  },
+  {
+   "fieldname": "section_break_model",
+   "fieldtype": "Section Break",
+   "label": "Model Settings"
+  },
+  {
+   "fieldname": "model_path",
+   "fieldtype": "Data",
+   "label": "Model File Path (.pkl)",
+   "description": "Leave blank to use default site path."
+  },
+  {
+   "default": "1",
+   "fieldname": "auto_retrain",
+   "fieldtype": "Check",
+   "label": "Auto-Retrain Model"
+  },
+  {
+   "default": "Weekly",
+   "fieldname": "retrain_frequency",
+   "fieldtype": "Select",
+   "label": "Retrain Frequency",
+   "options": "Daily\nWeekly\nMonthly"
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Finance AI",
+ "name": "FinGuard Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Accounts Manager",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

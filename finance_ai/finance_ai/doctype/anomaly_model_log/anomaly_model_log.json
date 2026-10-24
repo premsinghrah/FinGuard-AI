@@ -1,0 +1,190 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:AML-{YYYY}-{MM}-{#####}",
+ "creation": "2024-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "document_type": "Document",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "scan_type",
+  "company",
+  "status",
+  "column_break_1",
+  "scan_start",
+  "scan_end",
+  "section_break_dates",
+  "from_date",
+  "to_date",
+  "section_break_counts",
+  "transactions_scanned",
+  "alerts_created",
+  "column_break_counts2",
+  "alerts_updated",
+  "model_version",
+  "section_break_flags",
+  "ml_enabled",
+  "rules_enabled",
+  "column_break_flags2",
+  "duplicate_check_enabled",
+  "section_break_results",
+  "score_distribution",
+  "error_log"
+ ],
+ "fields": [
+  {
+   "fieldname": "scan_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Scan Type",
+   "options": "Full Scan\nDelta Scan\nQuick Scan",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Running\nCompleted\nFailed",
+   "default": "Running"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "scan_start",
+   "fieldtype": "Datetime",
+   "label": "Scan Started"
+  },
+  {
+   "fieldname": "scan_end",
+   "fieldtype": "Datetime",
+   "label": "Scan Ended"
+  },
+  {
+   "fieldname": "section_break_dates",
+   "fieldtype": "Section Break",
+   "label": "Date Range"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "section_break_counts",
+   "fieldtype": "Section Break",
+   "label": "Results"
+  },
+  {
+   "default": "0",
+   "fieldname": "transactions_scanned",
+   "fieldtype": "Int",
+   "label": "Transactions Scanned"
+  },
+  {
+   "default": "0",
+   "fieldname": "alerts_created",
+   "fieldtype": "Int",
+   "label": "Alerts Created"
+  },
+  {
+   "fieldname": "column_break_counts2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "alerts_updated",
+   "fieldtype": "Int",
+   "label": "Alerts Updated"
+  },
+  {
+   "fieldname": "model_version",
+   "fieldtype": "Data",
+   "label": "Model Version"
+  },
+  {
+   "fieldname": "section_break_flags",
+   "fieldtype": "Section Break",
+   "label": "Modules Enabled"
+  },
+  {
+   "default": "1",
+   "fieldname": "ml_enabled",
+   "fieldtype": "Check",
+   "label": "ML Detection Enabled"
+  },
+  {
+   "default": "1",
+   "fieldname": "rules_enabled",
+   "fieldtype": "Check",
+   "label": "Rules Enabled"
+  },
+  {
+   "fieldname": "column_break_flags2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "duplicate_check_enabled",
+   "fieldtype": "Check",
+   "label": "Duplicate Check Enabled"
+  },
+  {
+   "fieldname": "section_break_results",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "score_distribution",
+   "fieldtype": "JSON",
+   "label": "Score Distribution"
+  },
+  {
+   "fieldname": "error_log",
+   "fieldtype": "Long Text",
+   "label": "Error Log",
+   "read_only": 1
+  }
+ ],
+ "in_create": 1,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Finance AI",
+ "name": "Anomaly Model Log",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Accounts Manager"
+  },
+  {
+   "read": 1,
+   "role": "System Manager"
+  }
+ ],
+ "read_only": 1,
+ "sort_field": "scan_start",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 0
+}

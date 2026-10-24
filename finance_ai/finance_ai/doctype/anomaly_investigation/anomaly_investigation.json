@@ -1,0 +1,180 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:INV-{YYYY}-{#####}",
+ "creation": "2024-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "document_type": "Document",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "alert",
+  "status",
+  "risk_level",
+  "column_break_inv1",
+  "source_doctype",
+  "source_document",
+  "company",
+  "section_break_team",
+  "investigator",
+  "review_requested_from",
+  "section_break_notes",
+  "investigation_notes",
+  "evidence_links",
+  "section_break_timeline",
+  "opened_on",
+  "closed_on",
+  "column_break_decision",
+  "decision",
+  "action_taken"
+ ],
+ "fields": [
+  {
+   "fieldname": "alert",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Alert",
+   "options": "Financial Anomaly Alert",
+   "reqd": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Open\nIn Progress\nEscalated\nClosed \u2014 Confirmed Risk\nClosed \u2014 False Positive",
+   "default": "Open"
+  },
+  {
+   "fieldname": "risk_level",
+   "fieldtype": "Select",
+   "label": "Risk Level",
+   "options": "High Risk\nMedium Risk\nLow Risk"
+  },
+  {
+   "fieldname": "column_break_inv1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "source_doctype",
+   "fieldtype": "Data",
+   "label": "Source DocType"
+  },
+  {
+   "fieldname": "source_document",
+   "fieldtype": "Dynamic Link",
+   "label": "Source Document",
+   "options": "source_doctype"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "section_break_team",
+   "fieldtype": "Section Break",
+   "label": "Investigation Team"
+  },
+  {
+   "fieldname": "investigator",
+   "fieldtype": "Link",
+   "label": "Investigator",
+   "options": "User"
+  },
+  {
+   "fieldname": "review_requested_from",
+   "fieldtype": "Link",
+   "label": "Review Requested From",
+   "options": "User"
+  },
+  {
+   "fieldname": "section_break_notes",
+   "fieldtype": "Section Break",
+   "label": "Notes & Evidence"
+  },
+  {
+   "fieldname": "investigation_notes",
+   "fieldtype": "Long Text",
+   "label": "Investigation Notes"
+  },
+  {
+   "fieldname": "evidence_links",
+   "fieldtype": "Table",
+   "label": "Evidence",
+   "options": "Investigation Evidence Item"
+  },
+  {
+   "fieldname": "section_break_timeline",
+   "fieldtype": "Section Break",
+   "label": "Timeline"
+  },
+  {
+   "fieldname": "opened_on",
+   "fieldtype": "Datetime",
+   "label": "Opened On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "closed_on",
+   "fieldtype": "Datetime",
+   "label": "Closed On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_decision",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "decision",
+   "fieldtype": "Select",
+   "label": "Decision",
+   "options": "\nConfirmed Anomaly\nFalse Positive\nRequires Escalation\nPending"
+  },
+  {
+   "fieldname": "action_taken",
+   "fieldtype": "Text",
+   "label": "Action Taken"
+  }
+ ],
+ "icon": "fa fa-search",
+ "idx": 0,
+ "indicator_fieldname": "status",
+ "is_submittable": 0,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Finance AI",
+ "name": "Anomaly Investigation",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1
+  }
+ ],
+ "search_fields": "alert,status,risk_level,investigator",
+ "sort_field": "opened_on",
+ "sort_order": "DESC",
+ "title_field": "alert",
+ "track_changes": 1
+}

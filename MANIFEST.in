@@ -1,0 +1,2 @@
+recursive-include finance_ai *.json *.js *.css *.html *.txt *.md
+include requirements.txt

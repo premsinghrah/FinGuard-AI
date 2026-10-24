@@ -1,0 +1,26 @@
+{
+ "add_total_row": 0,
+ "creation": "2024-01-01 00:00:00.000000",
+ "disabled": 0,
+ "doctype": "Report",
+ "filters": [
+  {"fieldname": "company",   "fieldtype": "Link",  "label": "Company", "options": "Company"},
+  {"fieldname": "from_date", "fieldtype": "Date",  "label": "From Date"},
+  {"fieldname": "to_date",   "fieldtype": "Date",  "label": "To Date"},
+  {"fieldname": "days",      "fieldtype": "Int",   "label": "Last N Days", "default": "30"}
+ ],
+ "idx": 0,
+ "is_standard": "Yes",
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Finance AI",
+ "name": "Risk Score Trend",
+ "owner": "Administrator",
+ "ref_doctype": "Financial Anomaly Alert",
+ "report_name": "Risk Score Trend",
+ "report_type": "Script Report",
+ "roles": [
+  {"role": "Accounts Manager"},
+  {"role": "Accounts User"}
+ ]
+}

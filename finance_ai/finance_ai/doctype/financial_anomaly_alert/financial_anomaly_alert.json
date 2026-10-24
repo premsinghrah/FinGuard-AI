@@ -1,0 +1,303 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:FAA-{YYYY}-{#####}",
+ "color_field": "risk_level",
+ "creation": "2024-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "document_type": "Document",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "status",
+  "risk_level",
+  "risk_score",
+  "column_break_scores",
+  "ml_score",
+  "rule_score",
+  "duplicate_score",
+  "section_break_source",
+  "source_doctype",
+  "source_document",
+  "company",
+  "column_break_details",
+  "posting_date",
+  "amount",
+  "party_type",
+  "party",
+  "section_break_analysis",
+  "triggered_rules",
+  "summary",
+  "reasons",
+  "recommendation",
+  "section_break_duplicate",
+  "is_duplicate",
+  "duplicate_of",
+  "duplicate_similarity",
+  "section_break_scan",
+  "scan_run",
+  "section_break_investigation",
+  "assigned_to",
+  "resolution_notes",
+  "column_break_resolution",
+  "resolved_by",
+  "resolved_on"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Open\nUnder Investigation\nResolved\nFalse Positive",
+   "default": "Open"
+  },
+  {
+   "fieldname": "risk_level",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Risk Level",
+   "options": "High Risk\nMedium Risk\nLow Risk",
+   "reqd": 1
+  },
+  {
+   "fieldname": "risk_score",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Risk Score",
+   "precision": "4",
+   "reqd": 1,
+   "description": "Composite anomaly score between 0 and 1"
+  },
+  {
+   "fieldname": "column_break_scores",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ml_score",
+   "fieldtype": "Float",
+   "label": "ML Score",
+   "precision": "4",
+   "description": "Isolation Forest anomaly score (0-1)"
+  },
+  {
+   "fieldname": "rule_score",
+   "fieldtype": "Float",
+   "label": "Rule Score",
+   "precision": "4",
+   "description": "Rule-based anomaly score (0-1)"
+  },
+  {
+   "fieldname": "duplicate_score",
+   "fieldtype": "Float",
+   "label": "Duplicate Score",
+   "precision": "4",
+   "description": "Duplicate detection score (0-1)"
+  },
+  {
+   "fieldname": "section_break_source",
+   "fieldtype": "Section Break",
+   "label": "Source Document"
+  },
+  {
+   "fieldname": "source_doctype",
+   "fieldtype": "Data",
+   "label": "Source DocType",
+   "description": "e.g. Journal Entry or Payment Entry"
+  },
+  {
+   "fieldname": "source_document",
+   "fieldtype": "Dynamic Link",
+   "in_list_view": 1,
+   "label": "Source Document",
+   "options": "source_doctype"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "column_break_details",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Amount"
+  },
+  {
+   "fieldname": "party_type",
+   "fieldtype": "Data",
+   "label": "Party Type"
+  },
+  {
+   "fieldname": "party",
+   "fieldtype": "Data",
+   "label": "Party"
+  },
+  {
+   "fieldname": "section_break_analysis",
+   "fieldtype": "Section Break",
+   "label": "AI Analysis"
+  },
+  {
+   "fieldname": "triggered_rules",
+   "fieldtype": "Small Text",
+   "label": "Triggered Rules",
+   "description": "Comma-separated rule codes that flagged this document"
+  },
+  {
+   "fieldname": "summary",
+   "fieldtype": "Text",
+   "label": "Summary",
+   "description": "Plain-English explanation of why this was flagged"
+  },
+  {
+   "fieldname": "reasons",
+   "fieldtype": "Text",
+   "label": "Reasons",
+   "description": "Bullet-point list of anomaly reasons"
+  },
+  {
+   "fieldname": "recommendation",
+   "fieldtype": "Text",
+   "label": "Recommendation",
+   "description": "Suggested action for the reviewer"
+  },
+  {
+   "fieldname": "section_break_duplicate",
+   "fieldtype": "Section Break",
+   "label": "Duplicate Detection"
+  },
+  {
+   "fieldname": "is_duplicate",
+   "fieldtype": "Check",
+   "label": "Is Duplicate"
+  },
+  {
+   "fieldname": "duplicate_of",
+   "fieldtype": "Data",
+   "label": "Duplicate Of",
+   "depends_on": "eval:doc.is_duplicate == 1"
+  },
+  {
+   "fieldname": "duplicate_similarity",
+   "fieldtype": "Float",
+   "label": "Duplicate Similarity (%)",
+   "precision": "2",
+   "depends_on": "eval:doc.is_duplicate == 1"
+  },
+  {
+   "fieldname": "section_break_scan",
+   "fieldtype": "Section Break",
+   "label": "Scan Reference"
+  },
+  {
+   "fieldname": "scan_run",
+   "fieldtype": "Link",
+   "label": "Scan Run",
+   "options": "Anomaly Model Log"
+  },
+  {
+   "fieldname": "section_break_investigation",
+   "fieldtype": "Section Break",
+   "label": "Investigation & Resolution"
+  },
+  {
+   "fieldname": "assigned_to",
+   "fieldtype": "Link",
+   "label": "Assigned To",
+   "options": "User"
+  },
+  {
+   "fieldname": "resolution_notes",
+   "fieldtype": "Text",
+   "label": "Resolution Notes"
+  },
+  {
+   "fieldname": "column_break_resolution",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "resolved_by",
+   "fieldtype": "Link",
+   "label": "Resolved By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "resolved_on",
+   "fieldtype": "Datetime",
+   "label": "Resolved On",
+   "read_only": 1
+  }
+ ],
+ "icon": "fa fa-exclamation-triangle",
+ "idx": 0,
+ "indicator_fieldname": "risk_level",
+ "is_submittable": 0,
+ "links": [],
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Finance AI",
+ "name": "Financial Anomaly Alert",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1
+  }
+ ],
+ "search_fields": "status,risk_level,source_document,party",
+ "sort_field": "risk_score",
+ "sort_order": "DESC",
+ "states": [
+  {
+   "color": "Red",
+   "title": "High Risk"
+  },
+  {
+   "color": "Orange",
+   "title": "Medium Risk"
+  },
+  {
+   "color": "Yellow",
+   "title": "Low Risk"
+  }
+ ],
+ "title_field": "title",
+ "track_changes": 1
+}

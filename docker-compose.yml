@@ -1,0 +1,120 @@
+# ============================================================
+# FinGuard AI — Docker Compose for Local Development
+# "Detect anomalies. Explain risks. Protect financial integrity."
+#
+# Quick start:
+#   docker compose up -d
+#   docker compose logs -f frappe-web
+#   # Once ready: open http://localhost:8000
+#   # Login: Administrator / admin
+# ============================================================
+
+services:
+
+  # ── MariaDB ──────────────────────────────────────────────
+  db:
+    image: mariadb:10.6
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+      - --max_allowed_packet=256M
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret
+      MYSQL_DATABASE:      frappe_db
+      MYSQL_USER:          frappe
+      MYSQL_PASSWORD:      frappe_secret
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent", "-uroot", "-proot_secret"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # ── Redis (cache) ─────────────────────────────────────────
+  redis-cache:
+    image: redis:7-alpine
+    restart: unless-stopped
+
+  # ── Redis (queue) ─────────────────────────────────────────
+  redis-queue:
+    image: redis:7-alpine
+    restart: unless-stopped
+
+  # ── Frappe / ERPNext web server ───────────────────────────
+  frappe-web:
+    image: frappe/erpnext:v14
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis-cache:
+        condition: service_started
+      redis-queue:
+        condition: service_started
+    environment:
+      DB_HOST:         db
+      DB_PORT:         "3306"
+      REDIS_CACHE:     redis-cache:6379
+      REDIS_QUEUE:     redis-queue:6379
+      REDIS_SOCKETIO:  redis-queue:6379
+      FRAPPE_SITE_NAME_HEADER: site1.local
+    volumes:
+      # Mount the finance_ai app source into the container
+      - ./finance_ai:/home/frappe/frappe-bench/apps/finance_ai/finance_ai
+      - frappe-sites:/home/frappe/frappe-bench/sites
+    command: >
+      bash -c "
+        bench new-site site1.local
+          --db-host db
+          --db-user frappe
+          --db-password frappe_secret
+          --admin-password admin
+          --no-mariadb-socket
+          --install-app erpnext
+          --install-app finance_ai
+          --set-default 2>/dev/null || true
+        && bench --site site1.local migrate
+        && bench serve --port 8000 --host 0.0.0.0
+      "
+    restart: unless-stopped
+
+  # ── Background worker ─────────────────────────────────────
+  frappe-worker:
+    image: frappe/erpnext:v14
+    depends_on:
+      - frappe-web
+    environment:
+      DB_HOST:         db
+      REDIS_CACHE:     redis-cache:6379
+      REDIS_QUEUE:     redis-queue:6379
+    volumes:
+      - ./finance_ai:/home/frappe/frappe-bench/apps/finance_ai/finance_ai
+      - frappe-sites:/home/frappe/frappe-bench/sites
+    command: bench worker --queue short,default,long
+    restart: unless-stopped
+
+  # ── Scheduler ─────────────────────────────────────────────
+  frappe-scheduler:
+    image: frappe/erpnext:v14
+    depends_on:
+      - frappe-web
+    environment:
+      DB_HOST:         db
+      REDIS_CACHE:     redis-cache:6379
+      REDIS_QUEUE:     redis-queue:6379
+    volumes:
+      - ./finance_ai:/home/frappe/frappe-bench/apps/finance_ai/finance_ai
+      - frappe-sites:/home/frappe/frappe-bench/sites
+    command: bench schedule
+    restart: unless-stopped
+
+# ── Named volumes ─────────────────────────────────────────
+volumes:
+  mariadb-data:
+    driver: local
+  frappe-sites:
+    driver: local

@@ -1,0 +1,16 @@
+{
+ "doctype": "Page",
+ "module": "Finance AI",
+ "name": "finguard-dashboard",
+ "page_name": "finguard-dashboard",
+ "standard": "Yes",
+ "title": "FinGuard AI \u2014 Risk Dashboard",
+ "roles": [
+  {
+   "role": "Accounts Manager"
+  },
+  {
+   "role": "Accounts User"
+  }
+ ]
+}

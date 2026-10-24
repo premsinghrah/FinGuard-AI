@@ -1,0 +1,139 @@
+name: FinGuard AI CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  PYTHON_DEFAULT: "3.11"
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────────
+  # Lint
+  # ──────────────────────────────────────────────────────────────────────
+  lint:
+    name: Lint (flake8)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_DEFAULT }}
+          cache: pip
+
+      - name: Install lint dependencies
+        run: pip install flake8 flake8-bugbear
+
+      - name: Run flake8
+        run: |
+          flake8 finance_ai/ \
+            --max-line-length=120 \
+            --extend-ignore=E203,W503,E501 \
+            --exclude=finance_ai/finance_ai/doctype/*/test_*.py \
+            --count --statistics
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Unit Tests (no Frappe required)
+  # ──────────────────────────────────────────────────────────────────────
+  unit-tests:
+    name: Unit Tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run unit tests with coverage
+        run: |
+          pytest tests/unit/ \
+            -v \
+            --tb=short \
+            --cov=finance_ai/anomaly_engine \
+            --cov-report=xml \
+            --cov-report=term-missing \
+            -x
+
+      - name: Upload coverage to Codecov
+        if: matrix.python-version == env.PYTHON_DEFAULT
+        uses: codecov/codecov-action@v4
+        with:
+          file: coverage.xml
+          flags: unit
+          name: FinGuard-AI-Unit
+        continue-on-error: true
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Integration Tests (Docker — only on push to main)
+  # ──────────────────────────────────────────────────────────────────────
+  integration-tests:
+    name: Integration Tests (ERPNext + Docker)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [lint, unit-tests]
+
+    services:
+      mariadb:
+        image: mariadb:10.6
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: frappe_test
+          MYSQL_USER: frappe
+          MYSQL_PASSWORD: frappe
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_DEFAULT }}
+          cache: pip
+
+      - name: Install bench CLI
+        run: pip install frappe-bench
+
+      - name: Init bench and install app
+        run: |
+          bench init frappe-bench --frappe-branch version-15 --skip-redis-config-generation
+          cd frappe-bench
+          bench new-site site1.local \
+            --db-host 127.0.0.1 \
+            --db-name frappe_test \
+            --db-user frappe \
+            --db-password frappe \
+            --admin-password admin \
+            --no-mariadb-socket
+          bench --site site1.local install-app erpnext
+          bench --site site1.local install-app finance_ai
+        working-directory: ${{ github.workspace }}
+
+      - name: Run Frappe integration tests
+        run: |
+          cd frappe-bench
+          bench --site site1.local run-tests --app finance_ai
+        working-directory: ${{ github.workspace }}
