@@ -764,11 +764,13 @@ class FinGuardHTTPHandler(SimpleHTTPRequestHandler):
         query = parse_qs(parsed.query)
 
         # Page routes
-        if path in ("/", "/index.html", "/landing"):
-            self._serve_file(os.path.join(BASE_DIR, "landing.html"), "text/html; charset=utf-8")
-        elif path == "/login":
+        if path in ("/", "/index.html", "/landing", "/landing.html"):
+            index_path = os.path.join(BASE_DIR, "index.html")
+            fallback_path = os.path.join(BASE_DIR, "landing.html")
+            self._serve_file(index_path if os.path.exists(index_path) else fallback_path, "text/html; charset=utf-8")
+        elif path in ("/login", "/login.html"):
             self._serve_file(os.path.join(BASE_DIR, "login.html"), "text/html; charset=utf-8")
-        elif path == "/dashboard":
+        elif path in ("/dashboard", "/demo_dashboard.html"):
             self._serve_file(os.path.join(BASE_DIR, "demo_dashboard.html"), "text/html; charset=utf-8")
 
         # API Endpoints

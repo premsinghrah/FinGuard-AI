@@ -35,6 +35,21 @@ It integrates directly into ERPNext's **Accounts** module — no separate dashbo
 
 ---
 
+## Deployment Architecture: Static Demo vs Production Backend
+
+FinGuard AI is designed with clean architectural separation between client-side evaluation and server-side production processing:
+
+| Dimension | 🌐 Static Demo Mode (GitHub Pages) | 🚀 Production / Full ML Backend |
+|---|---|---|
+| **Hosting** | GitHub Pages (`index.html`, `demo_dashboard.html`) | Python Server (`run_demo.py`), Docker, Frappe Bench, or Codespaces |
+| **Authentication** | Explicit Public Sandbox Access with prominent Demo Banner | Server-side ERPNext/Frappe credential validation & role enforcement |
+| **Network Error Handling** | Clear notice instructing user to start backend or use Demo Sandbox | Strict 401/403 rejection; never creates sessions on network errors |
+| **Anomaly Engine** | Client-side simulated anomaly scoring and chart visualization | Scikit-learn Isolation Forest ML, statistical Z-Score, RapidFuzz |
+| **ERP Integration** | Mock ledger fixtures | Live Frappe REST API sync with `GL Entry`, `Journal Entry`, `Payment Entry` |
+| **LLM Diagnostics** | Pre-rendered forensic audit briefs | Live Google Gemini API inference for ad-hoc audit brief synthesis |
+
+---
+
 ## Key Features
 
 | Feature | Description |

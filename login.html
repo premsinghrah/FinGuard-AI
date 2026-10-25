@@ -209,8 +209,8 @@
       font-weight: 500;
     }
     .demo-accounts-wrap {
-      margin-top: 22px;
-      padding-top: 18px;
+      margin-top: 18px;
+      padding-top: 14px;
       border-top: 1px solid var(--border);
     }
     .demo-title {
@@ -253,8 +253,82 @@
     .demo-pill:hover .demo-role {
       color: var(--primary);
     }
+    .demo-sandbox-card {
+      margin-top: 18px;
+      padding: 14px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius-sm);
+    }
+    .demo-sandbox-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .demo-badge-tag {
+      background: #3b82f6;
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .demo-sandbox-subtitle {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #059669;
+    }
+    .demo-sandbox-desc {
+      font-size: 0.74rem;
+      color: var(--text-2);
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+    .demo-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .btn-demo-pill {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 8px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .btn-demo-pill:hover {
+      background: #ffffff;
+      border-color: #3b82f6;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+      transform: translateY(-1px);
+    }
+    .btn-demo-pill i {
+      font-size: 1rem;
+      color: #3b82f6;
+    }
+    .pill-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .pill-sub {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
     .back-home {
-      margin-top: 20px;
+      margin-top: 18px;
       text-align: center;
       font-size: 0.8rem;
       color: var(--text-muted);
@@ -335,9 +409,9 @@
       </button>
     </form>
 
-    <!-- 1-Click Verified ERPNext Demo Accounts -->
+    <!-- 1-Click Verified ERPNext Demo Accounts (for Production Backend Testing) -->
     <div class="demo-accounts-wrap">
-      <div class="demo-title"><i class="fa-solid fa-id-badge"></i> Quick 1-Click ERPNext Accounts:</div>
+      <div class="demo-title"><i class="fa-solid fa-id-badge"></i> Quick Fill ERPNext Credentials:</div>
       <div class="demo-pill-grid">
         <div class="demo-pill" onclick="quickFill('administrator', 'admin')">
           <div class="demo-name">Administrator</div>
@@ -355,6 +429,33 @@
           <div class="demo-name">Priya Patel</div>
           <div class="demo-role">Financial Controller</div>
         </div>
+      </div>
+    </div>
+
+    <!-- Dedicated Explicit Demo Sandbox Card (No Backend Required) -->
+    <div class="demo-sandbox-card">
+      <div class="demo-sandbox-header">
+        <div class="demo-badge-tag"><i class="fa-solid fa-flask"></i> Public Demo Mode</div>
+        <div class="demo-sandbox-subtitle">Simulated Ledgers & ML Diagnostics</div>
+      </div>
+      <p class="demo-sandbox-desc">
+        Explore the full FinGuard UI, risk triage charts, and forensic audit inspector without connecting to a live ERPNext database:
+      </p>
+      <div class="demo-actions-grid">
+        <button type="button" class="btn-demo-pill" onclick="launchExplicitDemo('Internal Auditor', 'Ananya Verma', 'analyst.ananya@apex.erp')">
+          <i class="fa-solid fa-user-shield"></i>
+          <div>
+            <div class="pill-title">Auditor View</div>
+            <div class="pill-sub">Ananya Verma</div>
+          </div>
+        </button>
+        <button type="button" class="btn-demo-pill" onclick="launchExplicitDemo('Financial Controller', 'Priya Patel', 'cfo.priya@apex.erp')">
+          <i class="fa-solid fa-chart-line"></i>
+          <div>
+            <div class="pill-title">CFO View</div>
+            <div class="pill-sub">Priya Patel</div>
+          </div>
+        </button>
       </div>
     </div>
 
@@ -386,9 +487,25 @@
       switchAuthTab('user');
       document.getElementById('login-username').value = usr;
       document.getElementById('login-password').value = pwd;
-      document.getElementById('btn-submit-user').click();
+      document.getElementById('error-box').style.display = 'none';
     }
 
+    // Explicitly selected Demo Access: creates a clearly flagged demo session and redirects with ?demo=true
+    function launchExplicitDemo(role, name, email) {
+      const demoSession = {
+        username: email || 'analyst.ananya@apex.erp',
+        full_name: name || 'Ananya Verma',
+        role: role || 'Internal Auditor',
+        email: email || 'analyst.ananya@apex.erp',
+        is_demo: true,
+        mode: 'demo',
+        login_time: new Date().toISOString()
+      };
+      localStorage.setItem('finguard_session', JSON.stringify(demoSession));
+      window.location.href = 'demo_dashboard.html?demo=true';
+    }
+
+    // Production Authentication: Strict backend verification only.
     async function handleUserLogin(e) {
       e.preventDefault();
       const errBox = document.getElementById('error-box');
@@ -409,33 +526,38 @@
           body: JSON.stringify({ mode: 'user', username: usr, password: pwd, site_url: site })
         });
 
+        if (!resp.ok) {
+          throw new Error(`Server returned HTTP ${resp.status}`);
+        }
+
         const data = await resp.json();
         if (data.success) {
-          // Store session
+          // Strictly authenticated production session
+          data.user.is_demo = false;
           localStorage.setItem('finguard_session', JSON.stringify(data.user));
           btn.innerHTML = '<i class="fa-solid fa-check"></i> Authorized! Entering...';
           setTimeout(() => {
             window.location.href = 'demo_dashboard.html';
           }, 400);
         } else {
-          errBox.textContent = data.message || 'Authentication failed: Invalid ERPNext credentials or insufficient role permissions.';
+          errBox.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> Authentication Rejected:</strong> ${data.message || 'Invalid ERPNext credentials or insufficient role permissions.'}`;
           errBox.style.display = 'block';
           btn.innerHTML = '<i class="fa-solid fa-fingerprint"></i> Authenticate & Enter Console';
           btn.disabled = false;
         }
       } catch (err) {
-        // Fallback for static demo environments (e.g. GitHub Pages)
-        const demoUser = {
-          username: usr,
-          full_name: usr === 'administrator' ? 'Administrator' : 'CA Rajesh Sharma',
-          role: usr === 'cfo.priya@apex.erp' ? 'Financial Controller' : 'System Manager',
-          email: usr.includes('@') ? usr : `${usr}@apex.erp`
-        };
-        localStorage.setItem('finguard_session', JSON.stringify(demoUser));
-        btn.innerHTML = '<i class="fa-solid fa-check"></i> Demo Authorized! Entering...';
-        setTimeout(() => {
-          window.location.href = 'demo_dashboard.html';
-        }, 400);
+        // PRODUCTION MODE: Network/server error must NEVER grant a session!
+        errBox.innerHTML = `
+          <strong><i class="fa-solid fa-triangle-exclamation"></i> ERPNext Backend Unreachable:</strong><br>
+          Cannot connect to authentication service (${err.message || 'Connection refused'}).<br>
+          <div style="font-size:0.75rem; color:var(--text-2); margin-top:6px; line-height:1.4;">
+            • If running locally, ensure backend is running: <code>python3 run_demo.py</code><br>
+            • Or click <strong>Auditor View</strong> below to explore in standalone demo mode.
+          </div>
+        `;
+        errBox.style.display = 'block';
+        btn.innerHTML = '<i class="fa-solid fa-fingerprint"></i> Authenticate & Enter Console';
+        btn.disabled = false;
       }
     }
 
@@ -458,21 +580,26 @@
           body: JSON.stringify({ mode: 'token', api_key: apiKey, api_secret: apiSecret })
         });
 
+        if (!resp.ok) {
+          throw new Error(`Server returned HTTP ${resp.status}`);
+        }
+
         const data = await resp.json();
         if (data.success) {
+          data.user.is_demo = false;
           localStorage.setItem('finguard_session', JSON.stringify(data.user));
           btn.innerHTML = '<i class="fa-solid fa-check"></i> Token Validated!';
           setTimeout(() => {
-            window.location.href = '/dashboard';
+            window.location.href = 'demo_dashboard.html';
           }, 400);
         } else {
-          errBox.textContent = data.message || 'API Token Authentication failed.';
+          errBox.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> Token Rejected:</strong> ${data.message || 'API Token Authentication failed.'}`;
           errBox.style.display = 'block';
           btn.innerHTML = '<i class="fa-solid fa-key"></i> Validate API Token';
           btn.disabled = false;
         }
       } catch (err) {
-        errBox.textContent = 'Connection error communicating with authentication API.';
+        errBox.innerHTML = `<strong><i class="fa-solid fa-triangle-exclamation"></i> ERPNext Backend Unreachable:</strong> Unable to connect to authentication service.`;
         errBox.style.display = 'block';
         btn.innerHTML = '<i class="fa-solid fa-key"></i> Validate API Token';
         btn.disabled = false;
