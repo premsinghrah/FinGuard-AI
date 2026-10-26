@@ -6,6 +6,7 @@
   "portsAttributes": {
     "8080": {
       "label": "FinGuard AI Console",
+      "visibility": "public",
       "onAutoForward": "openBrowser"
     }
   },
