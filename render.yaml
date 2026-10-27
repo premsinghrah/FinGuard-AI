@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: finguard-ai
+    runtime: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
+    startCommand: "python3 run_demo.py"
+    healthCheckPath: /api/summary
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.14
+      - key: GEMINI_API_KEY
+        sync: false

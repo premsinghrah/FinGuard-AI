@@ -12,6 +12,10 @@
   <a href="https://codespaces.new/premsinghrah/FinGuard-AI">
     <img src="https://github.com/codespaces/badge.svg" alt="Open in GitHub Codespaces">
   </a>
+  &nbsp;&nbsp;
+  <a href="https://render.com/deploy?repo=https://github.com/premsinghrah/FinGuard-AI">
+    <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
+  </a>
 </p>
 
 <p align="center">

@@ -758,6 +758,17 @@ class FinGuardHTTPHandler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         sys.stderr.write(f"[{datetime.now().strftime('%H:%M:%S')}] {args[0]} - {args[1]}\n")
 
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+    def do_HEAD(self):
+        self.do_GET()
+
     def do_GET(self):
         parsed = urlparse(self.path)
         path = parsed.path
@@ -934,6 +945,7 @@ class FinGuardHTTPHandler(SimpleHTTPRequestHandler):
             content = f.read()
         self.send_response(200)
         self.send_header("Content-Type", content_type)
+        self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Content-Length", str(len(content)))
         self.end_headers()
         self.wfile.write(content)
@@ -954,7 +966,7 @@ def run_server(port: int = 8080):
 
 
 if __name__ == "__main__":
-    port = 8080
+    port = int(os.environ.get("PORT", 8080))
     if len(sys.argv) > 1 and sys.argv[1].isdigit():
         port = int(sys.argv[1])
     run_server(port)
